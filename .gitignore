@@ -1,0 +1,24 @@
+# Binaries and compiled output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+travelsphere
+/TravelSphere
+main
+
+# Test binaries & coverage
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Secrets & environment 
+.env
+.env.local
+*.env
+conf/app.conf
+
+# ignore project document
+document.txt
