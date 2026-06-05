@@ -10,5 +10,6 @@ type HomeController struct {
 // Get renders the home page.
 func (c *HomeController) Get() {
 	c.Data["Title"] = "TravelSphere"
-	c.TplName = "home.tpl" // Beego looks for views/home.tpl
+	c.Layout="layout.tpl"
+	c.TplName = "home.tpl" 
 }
