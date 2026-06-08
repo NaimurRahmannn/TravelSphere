@@ -36,3 +36,5 @@
 		{{end}}
 	</ul>
 </section>
+
+<script src="/static/js/home.js"></script>
