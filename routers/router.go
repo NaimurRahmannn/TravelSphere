@@ -12,4 +12,5 @@ func init() {
 	web.Router("/countries", &controllers.CountryController{})
 	web.Router("/countries/:slug", &controllers.CountryController{}, "get:Detail")
 	web.Router("/wishlist", &controllers.WishlistController{})
+	web.Router("/dashboard", &controllers.DashboardController{})
 }

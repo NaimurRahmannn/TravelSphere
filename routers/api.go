@@ -14,4 +14,5 @@ func init() {
 	web.Router("/api/wishlist", &api.WishlistController{})
 	web.Router("/api/wishlist/:id", &api.WishlistController{})
 	web.Router("api/countries",&api.CountryController{})
+	web.Router("/api/dashboard/summary", &api.DashboardController{})
 }
