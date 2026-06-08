@@ -3,3 +3,4 @@ httpport = 8080
 runmode = dev
 OPENTRIPMAP_API_KEY=
 sessionon = true
+copyrequestbody = true
