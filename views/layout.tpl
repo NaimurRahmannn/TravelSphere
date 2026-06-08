@@ -10,7 +10,7 @@
 	{{template "partials/header.tpl" .}}
 
 	<main class="container">
-		{{.LayoutContent}}  <!-- each page's TplName output gets injected here -->
+		{{.LayoutContent}}
 	</main>
 
 	{{template "partials/footer.tpl" .}}

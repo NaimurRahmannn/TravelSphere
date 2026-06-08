@@ -53,9 +53,18 @@ func (c *CountryController) Detail() {
 
 // renderNotFound shows the 404 template with the bad slug echoed back.
 func (c *CountryController) renderNotFound(slug string) {
-	c.Ctx.Output.SetStatus(404) // real 404 status, not a 200 with error text
+	c.Ctx.Output.SetStatus(404)
+
 	c.Data["Title"] = "Not Found"
+	c.Data["ActiveNav"] = "countries"
 	c.Data["BadSlug"] = slug
+
 	c.Layout = "layout.tpl"
 	c.TplName = "404.tpl"
+
+	if err := c.Render(); err != nil {
+		c.Ctx.WriteString("Country not found")
+	}
+
+	c.StopRun()
 }
