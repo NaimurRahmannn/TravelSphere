@@ -8,6 +8,19 @@
   let timer;
   let currentRequestId = 0;
 
+  function resetSearch() {
+    input.value = "";
+    box.innerHTML = "";
+  }
+
+  // Clear search on normal page load
+  resetSearch();
+
+  // Clear search when returning with browser back button
+  window.addEventListener("pageshow", function () {
+    resetSearch();
+  });
+
   function clearSuggestions() {
     box.innerHTML = "";
   }
@@ -47,7 +60,6 @@
 
       const countries = await resp.json();
 
-      // Important: ignore old response if input changed or became empty
       if (requestId !== currentRequestId || input.value.trim() !== q) {
         return;
       }
