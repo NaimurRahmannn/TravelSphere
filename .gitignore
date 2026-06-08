@@ -22,3 +22,4 @@ conf/app.conf
 
 # ignore project document
 document.txt
+/data/
