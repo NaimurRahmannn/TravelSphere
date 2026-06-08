@@ -40,3 +40,5 @@
 	</a>
 	{{end}}
 </div>
+
+ <script src="/static/js/countries.js"></script>
