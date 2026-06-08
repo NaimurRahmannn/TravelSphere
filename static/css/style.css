@@ -296,3 +296,325 @@ section + section {
     flex-basis: 190px;
   }
 }
+/* ============================================================
+   Country Explorer page (/countries)
+   ============================================================ */
+
+.page-head {
+  margin-bottom: 1.5rem;
+}
+
+.page-head h1 {
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+
+.page-head p {
+  max-width: 44rem;
+  margin-top: 0.5rem;
+  color: #445;
+}
+
+/* Search + region filter bar */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  border: 1px solid #e3e8ee;
+  border-radius: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #667;
+}
+
+.field input,
+.field select {
+  padding: 0.55rem 0.7rem;
+  font-size: 0.95rem;
+  border: 1px solid #cfd6df;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.field input {
+  min-width: 16rem;
+}
+
+/* On the explorer page the grid WRAPS into rows, unlike the
+   horizontal scroll strip used for featured cards on the home page.
+   Targeting the ID overrides the .country-grid scroll behaviour here. */
+#country-results.country-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  overflow-x: visible;
+  flex-wrap: wrap;
+}
+
+/* The explorer cards are taller (full detail) and stack flag-on-top,
+   so we override the compact horizontal layout from the home page. */
+#country-results .country-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#country-results .country-card .flag {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+}
+
+#country-results .country-card .card-body {
+  padding: 0.85rem;
+}
+
+#country-results .country-card .card-body p {
+  font-size: 0.85rem;
+  color: #445;
+  margin-top: 0.15rem;
+}
+
+#country-results .country-card .card-body strong {
+  color: #223;
+}
+
+#country-results .country-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Error / notice banner */
+.alert {
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  background: #fdecea;
+  border: 1px solid #f5c6c2;
+  border-radius: 8px;
+  color: #8a2c25;
+}
+
+/* ============================================================
+   Destination detail page (/countries/:slug)
+   ============================================================ */
+
+/* Shared card surface used across the detail page sections */
+.card {
+  background: #fff;
+  border: 1px solid #e3e8ee;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.card + .card {
+  margin-top: 1.5rem;
+}
+
+.detail-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.detail-flag {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.detail-info {
+  min-width: 0;
+}
+
+.region-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2c5d8f;
+  background: #e8f0f9;
+  border-radius: 999px;
+}
+
+.detail-info h1 {
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+.official {
+  color: #667;
+  margin-bottom: 1.25rem;
+}
+
+/* The fact strip: Capital / Population / Region / Currency / Languages */
+.fact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+}
+
+.fact-row > div {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.fact-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #889;
+  margin-bottom: 0.2rem;
+}
+
+/* Add to Wishlist button + feedback area */
+.wishlist-action button {
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: #e23b6d;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.wishlist-action button:hover {
+  background: #c92f5d;
+}
+
+.wishlist-action button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+#wishlist-feedback {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+#wishlist-feedback.success {
+  color: #1f7a4d;
+}
+
+#wishlist-feedback.error {
+  color: #8a2c25;
+}
+
+/* Two-column layout: weather on the left, attractions on the right */
+.detail-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* The .card + .card rule adds top margin between stacked cards, but inside
+   the grid the columns sit side by side, so cancel that here. */
+.detail-columns .card + .card {
+  margin-top: 0;
+}
+
+.detail-columns h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.weather .temp {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.muted {
+  color: #889;
+  font-size: 0.9rem;
+}
+
+/* The kinds string inside <code> reads as a hint, not body text */
+.muted code {
+  padding: 0.1rem 0.3rem;
+  background: #f0f2f5;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* 404 page */
+
+.not-found {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.not-found h1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.not-found a {
+  color: #2c5d8f;
+}
+
+/* Responsive: detail + explorer */
+
+@media (max-width: 900px) {
+  #country-results.country-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-columns .card + .card {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  #country-results.country-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-header {
+    flex-direction: column;
+  }
+
+  .detail-flag {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .detail-info h1 {
+    font-size: 2rem;
+  }
+
+  .field input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .field {
+    flex: 1;
+  }
+}
