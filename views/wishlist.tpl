@@ -47,3 +47,4 @@
 
 <!-- A page-level area for messages not tied to a single row (e.g. save success). -->
 <div id="wishlist-message"></div>
+<script src="/static/js/wishlist.js"></script>
