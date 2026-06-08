@@ -1,6 +1,6 @@
 <section class="auth-page">
 	<h1>Login</h1>
-	<p class="muted">Use the demo credentials below to access the wishlist and dashboard.</p>
+	<p class="muted">Log in to access your wishlist and dashboard.</p>
 
 	{{if .Error}}
 	<p class="alert">{{.Error}}</p>
@@ -11,7 +11,7 @@
 	<form method="post" action="/login" class="auth-form">
 		<div class="field">
 			<label for="username">Username</label>
-			<input type="text" id="username" name="username" required>
+			<input type="text" id="username" name="username" value="{{.FormUsername}}" required>
 		</div>
 		<div class="field">
 			<label for="password">Password</label>
@@ -20,5 +20,5 @@
 		<button type="submit" class="auth-submit">Log in</button>
 	</form>
 
-	<p class="demo-hint muted">Demo: <code>beta</code> / <code>beta123</code></p>
+	<p class="muted">No account yet? <a href="/register">Register</a>.</p>
 </section>

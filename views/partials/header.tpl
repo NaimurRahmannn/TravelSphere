@@ -13,6 +13,7 @@
 				<a href="/logout">Logout</a>
 			{{else}}
 				<a href="/login">Login</a>
+				
 			{{end}}
 		</div>
 	</nav>

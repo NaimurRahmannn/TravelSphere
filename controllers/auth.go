@@ -1,42 +1,78 @@
 package controllers
 
-import "github.com/beego/beego/v2/server/web"
+import (
+	"github.com/beego/beego/v2/server/web"
 
-// AuthController handles login and logout.
+	"TravelSphere/services"
+)
+
+
 type AuthController struct {
 	web.Controller
 }
 
-// demoUser
-const (
-	demoUser = "beta"
-	demoPass = "beta123"
-)
-
-// Get renders the login form. → GET /login
+// Get renders the login form GET /login
 func (c *AuthController) Get() {
 	c.Data["Title"] = "Login"
 	c.Layout = "layout.tpl"
 	c.TplName = "login.tpl"
 }
 
-// Post checks credentials and starts a session on success
+// Post checks credentials against the user store and starts a session on success
 func (c *AuthController) Post() {
 	username := c.GetString("username")
 	password := c.GetString("password")
 
-	if username == demoUser && password == demoPass {
-		// auth filter checks for session presence.
-		c.SetSession("username", username)
-		c.Redirect("/dashboard", 302)
+	canonical, err := services.AuthenticateUser(username, password)
+	if err != nil {
+		c.Data["Title"] = "Login"
+		c.Data["Error"] = "Invalid username or password."
+		c.Data["FormUsername"] = username
+		c.Layout = "layout.tpl"
+		c.TplName = "login.tpl"
 		return
 	}
 
-	// Re-render the form with an error message; keep it on the same page.
-	c.Data["Title"] = "Login"
-	c.Data["Error"] = "Invalid username or password."
+	// Session presence is what the auth filter checks for.
+	c.SetSession("username", canonical)
+	c.Redirect("/dashboard", 302)
+}
+
+// RegisterForm renders the registration form-- GET /register
+func (c *AuthController) RegisterForm() {
+	c.Data["Title"] = "Register"
 	c.Layout = "layout.tpl"
-	c.TplName = "login.tpl"
+	c.TplName = "register.tpl"
+}
+
+// Register creates an account and logs the new user straight in---POST /register
+func (c *AuthController) Register() {
+	username := c.GetString("username")
+	password := c.GetString("password")
+	confirm := c.GetString("confirm")
+
+	if password != confirm {
+		c.renderRegisterError(username, "Passwords do not match.")
+		return
+	}
+
+	user, err := services.RegisterUser(username, password)
+	if err != nil {
+		c.renderRegisterError(username, err.Error())
+		return
+	}
+
+	c.SetSession("username", user.Username)
+	c.Redirect("/dashboard", 302)
+}
+
+// renderRegisterError re-renders the registration form with an error message
+func (c *AuthController) renderRegisterError(username, message string) {
+	c.Data["Title"] = "Register"
+	c.Data["Error"] = message
+	c.Data["FormUsername"] = username
+	c.Layout = "layout.tpl"
+	c.TplName = "register.tpl"
 }
 
 // Logout clears the session and returns home

@@ -18,5 +18,6 @@ func init() {
 	web.Router("/wishlist", &controllers.WishlistController{})
 	web.Router("/dashboard", &controllers.DashboardController{})
 	web.Router("/login", &controllers.AuthController{})
+	web.Router("/register", &controllers.AuthController{}, "get:RegisterForm;post:Register")
 	web.Router("/logout", &controllers.AuthController{}, "get:Logout")
 }
