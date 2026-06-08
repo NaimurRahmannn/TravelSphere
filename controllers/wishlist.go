@@ -11,7 +11,9 @@ type WishlistController struct {
 func (c *WishlistController) Get() {
 	c.Data["Title"] = "Wishlist"
 	c.Data["ActiveNav"] = "wishlist"
-	items, err := services.GetWishlist()
+	// RequireAuth guards this route, so a username is always present here.
+	username, _ := c.GetSession("username").(string)
+	items, err := services.GetWishlist(username)
 	if err != nil {
 		c.Data["LoadError"] = "Could Not load your wishlist right now"
 		c.Data["Items"] = nil

@@ -32,6 +32,10 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ note: note, status: status }),
         });
+        if (resp.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
         const data = await resp.json();
         if (!resp.ok) {
           flash(data.error || "Could not save changes.", "error");
@@ -50,6 +54,10 @@
       e.target.disabled = true;
       try {
         const resp = await fetch(`/api/wishlist/${id}`, { method: "DELETE" });
+        if (resp.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
         if (!resp.ok) {
           const data = await resp.json();
           flash(data.error || "Could not delete.", "error");

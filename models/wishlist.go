@@ -3,6 +3,7 @@ package models
 // Wishlistitems
 type WishlistItem struct{
 	ID  string `json:"id"`
+	Username string `json:"username"`
 	CountryName string `json:"country_name"`
 	Note  string `json:"note"`
 	Status string `json:"status"`

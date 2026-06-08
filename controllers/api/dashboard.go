@@ -16,7 +16,9 @@ type DashboardController struct {
 
 // Get returns the wishlist summary counts. GET /api/dashboard/summary
 func (c *DashboardController) Get() {
-	summary, err := services.GetDashboardSummary()
+	// RequireAuthAPI guards this route, so a username is always present.
+	username, _ := c.GetSession("username").(string)
+	summary, err := services.GetDashboardSummary(username)
 	if err != nil {
 		c.Ctx.Output.SetStatus(http.StatusInternalServerError)
 		c.Data["json"] = utils.NewError("could not load summary", http.StatusInternalServerError)

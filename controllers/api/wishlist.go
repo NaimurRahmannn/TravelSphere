@@ -34,12 +34,18 @@ func (c * WishlistController) respondError(message string, status int){
 	c.respondJSON(status, utils.NewError(message,status))
 }
 
+// currentUser returns the logged-in username from the session
+func (c *WishlistController) currentUser() string {
+	username, _ := c.GetSession("username").(string)
+	return username
+}
+
 // Get returns all wishlist entries and according to the ID. GET /api/wishlist
 func (c *WishlistController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
 	if id != "" {
-		item, err := services.GetWishlistItemByID(id)
+		item, err := services.GetWishlistItemByID(c.currentUser(), id)
 		if err != nil {
 			c.respondError(err.Error(), http.StatusNotFound)
 			return
@@ -49,7 +55,7 @@ func (c *WishlistController) Get() {
 		return
 	}
 
-	items, err := services.GetWishlist()
+	items, err := services.GetWishlist(c.currentUser())
 	if err != nil {
 		c.respondError("Could not load wishlist", http.StatusInternalServerError)
 		return
@@ -67,7 +73,7 @@ func (c *WishlistController) Post() {
 		return
 	}
 
-	item, err := services.CreateWishlistItem(payload.CountryName, payload.Note, payload.Status)
+	item, err := services.CreateWishlistItem(c.currentUser(), payload.CountryName, payload.Note, payload.Status)
 	if err != nil {
 		c.respondError(err.Error(), http.StatusBadRequest)
 		return
@@ -86,7 +92,7 @@ func (c *WishlistController) Put() {
 		return
 	}
 
-	item, err := services.UpdateWishlistItem(id, payload.Note, payload.Status)
+	item, err := services.UpdateWishlistItem(c.currentUser(), id, payload.Note, payload.Status)
 	if err != nil {
 		c.respondError(err.Error(), http.StatusBadRequest)
 		return
@@ -99,7 +105,7 @@ func (c *WishlistController) Put() {
 func (c *WishlistController) Delete() {
 	id := c.Ctx.Input.Param(":id")
 
-	if err := services.DeleteWishlistItem(id); err != nil {
+	if err := services.DeleteWishlistItem(c.currentUser(), id); err != nil {
 		c.respondError(err.Error(), http.StatusNotFound)
 		return
 	}

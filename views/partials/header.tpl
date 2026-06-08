@@ -7,5 +7,13 @@
 			<li><a href="/wishlist">Wishlist</a></li>
 			<li><a href="/dashboard">Dashboard</a></li>
 		</ul>
+		<div class="nav-auth">
+			{{if .IsLoggedIn}}
+				<span class="nav-user">Hi, {{.Username}}</span>
+				<a href="/logout">Logout</a>
+			{{else}}
+				<a href="/login">Login</a>
+			{{end}}
+		</div>
 	</nav>
 </header>

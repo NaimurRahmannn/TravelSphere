@@ -22,6 +22,14 @@
         }),
       });
 
+      if (resp.status === 401) {
+        // Guests can't have a wishlist — send them to log in first. After
+        // logging in they can come back and add the country.
+        feedback.textContent = "Please log in to save to your wishlist...";
+        window.location.href = "/login";
+        return;
+      }
+
       const data = await resp.json();
 
       if (!resp.ok) {

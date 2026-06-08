@@ -7,6 +7,11 @@
   async function refreshStats() {
     try {
       const resp = await fetch("/api/dashboard/summary");
+      if (resp.status === 401) {
+        // Session expired while the page was open — send them back to login.
+        window.location.href = "/login";
+        return;
+      }
       if (!resp.ok) throw new Error("request failed");
       const summary = await resp.json();
 
