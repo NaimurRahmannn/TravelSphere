@@ -53,3 +53,4 @@
 		</ul>
 	</section>
 </div>
+ <script src="/static/js/destination.js"></script>
