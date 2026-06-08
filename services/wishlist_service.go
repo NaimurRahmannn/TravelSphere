@@ -51,7 +51,6 @@ func UpdateWishlistItem(id, note, status string) (models.WishlistItem, error) {
 	for i := range items {
 		if items[i].ID == id {
 			// Validate against the existing country name, since update payloads
-			// only carry note + status.
 			if err := utils.ValidateWishlistInput(items[i].CountryName, status); err != nil {
 				return models.WishlistItem{}, err
 			}
@@ -80,4 +79,19 @@ func DeleteWishlistItem(id string) error {
 		}
 	}
 	return fmt.Errorf("wishlist item %q not found", id)
+}
+
+func GetWishlistItemByID(id string) (models.WishlistItem, error) {
+	items, err := GetWishlist()
+	if err != nil {
+		return models.WishlistItem{}, err
+	}
+
+	for _, item := range items {
+		if item.ID == id {
+			return item, nil
+		}
+	}
+
+	return models.WishlistItem{}, fmt.Errorf("wishlist item not found")
 }
