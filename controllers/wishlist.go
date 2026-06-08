@@ -14,9 +14,9 @@ func (c *WishlistController) Get() {
 	items, err := services.GetWishlist()
 	if err != nil {
 		c.Data["LoadError"] = "Could Not load your wishlist right now"
-		c.Data["items"] = nil
+		c.Data["Items"] = nil
 	} else {
-		c.Data["items"] = items
+		c.Data["Items"] = items
 	}
 	c.Layout = "layout.tpl"
 	c.TplName = "wishlist.tpl"
