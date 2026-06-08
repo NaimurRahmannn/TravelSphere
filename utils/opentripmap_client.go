@@ -3,9 +3,9 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	beego "github.com/beego/beego/v2/server/web"
 	"io"
 	"net/http"
-	"os"
 )
 
 const openTripMapBase = "https://api.opentripmap.com/0.1/en/places"
@@ -13,17 +13,17 @@ const openTripMapBase = "https://api.opentripmap.com/0.1/en/places"
 // Attraction is the clean DTO for a single attraction, Used by both the service layer and templates.
 type Attraction struct {
 	Name     string
-	Kinds    string 
+	Kinds    string
 	XID      string // OpenTripMap unique ID (useful for deduplication)
-	Distance int    
+	Distance int
 }
 
 // RawPlace mirrors the OpenTripMap /radius response shape.
 type RawPlace struct {
-	Name       string  `json:"name"`
-	Kinds      string  `json:"kinds"`
-	XID        string  `json:"xid"`
-	Dist       float64 `json:"dist"`
+	Name  string  `json:"name"`
+	Kinds string  `json:"kinds"`
+	XID   string  `json:"xid"`
+	Dist  float64 `json:"dist"`
 }
 
 // RawPlacesResponse is the top-level response from /radius.
@@ -36,9 +36,9 @@ type RawPlacesResponse struct {
 // GetAttractionsByCoords fetches nearby attractions for a lat/lng.
 // radius is in metres. limit caps the number of results.
 func GetAttractionsByCoords(lat, lng float64, radius, limit int) ([]Attraction, error) {
-	apiKey := os.Getenv("OPENTRIPMAP_API_KEY")
-	if apiKey == "" {
-		return nil, fmt.Errorf("OPENTRIPMAP_API_KEY not set")
+	apiKey, err := beego.AppConfig.String("OPENTRIPMAP_API_KEY")
+	if err != nil || apiKey == "" {
+		return nil, fmt.Errorf("OPENTRIPMAP_API_KEY not set in app.conf")
 	}
 
 	url := fmt.Sprintf(
