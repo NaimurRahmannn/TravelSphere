@@ -13,4 +13,5 @@ func init() {
 	// path and PUT/DELETE to the :id variant.
 	web.Router("/api/wishlist", &api.WishlistController{})
 	web.Router("/api/wishlist/:id", &api.WishlistController{})
+	web.Router("api/countries",&api.CountryController{})
 }
