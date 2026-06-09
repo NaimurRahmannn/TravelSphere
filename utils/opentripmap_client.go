@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-const openTripMapBase = "https://api.opentripmap.com/0.1/en/places"
+var openTripMapBase = "https://api.opentripmap.com/0.1/en/places"
 
 
 type Attraction struct {
