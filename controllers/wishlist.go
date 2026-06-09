@@ -7,11 +7,10 @@ import (
 type WishlistController struct {
 	BaseController
 }
-// WishlistController render the wishlist page
+
 func (c *WishlistController) Get() {
 	c.Data["Title"] = "Wishlist"
 	c.Data["ActiveNav"] = "wishlist"
-	// RequireAuth guards this route, so a username is always present here.
 	username, _ := c.GetSession("username").(string)
 	items, err := services.GetWishlist(username)
 	if err != nil {

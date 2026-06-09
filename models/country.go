@@ -1,23 +1,21 @@
 package models
 
-// Country is our clean DTO — controllers and templates will use this DTO.
 type Country struct {
-	Name       string   // common name, e.g. "Bangladesh"
-	OfficialName string // e.g. "People's Republic of Bangladesh"
-	Slug       string   // url-safe, e.g. "bangladesh"
+	Name       string   // "Bangladesh"
+	OfficialName string //"People's Republic of Bangladesh"
+	Slug       string   //  "bangladesh"
 	Capital    string   // first capital, or "" if none
 	Population int      // raw number; format for display separately
-	Region     string   // e.g. "Asia"
-	Subregion  string   // e.g. "Southern Asia"
-	FlagPNG    string   // image URL
-	FlagAlt    string   // accessibility text
-	Currencies []string // display strings, e.g. "BDT (Bangladeshi taka)"
-	Languages  []string // e.g. ["Bengali"]
-	LatLng     [2]float64 // [lat, lng] — needed for OpenTripMap attractions
+	Region     string   //  "Asia"
+	Subregion  string   //"Southern Asia"
+	FlagPNG    string   // image_URL
+	FlagAlt    string   // flag alternative text
+	Currencies []string //  "BDT -Bangladeshi taka"
+	Languages  []string //"Bengali"
+	LatLng     [2]float64 // lat, lng
 }
 
-// RawCountry mirrors the REST Countries v3.1 JSON shape.
-// detects the field that we need
+// RawCountry matches the fields used from the REST Countries API response.
 type RawCountry struct {
 	Name struct {
 		Common   string `json:"common"`
@@ -31,13 +29,11 @@ type RawCountry struct {
 		PNG string `json:"png"`
 		Alt string `json:"alt"`
 	} `json:"flags"`
-	// Currencies is a map keyed by currency code (e.g "BDT"), value(name,symbol)
 	Currencies map[string]struct {
 		Name   string `json:"name"`
 		Symbol string `json:"symbol"`
 	} `json:"currencies"`
-	// Languages is a map keyed by code (e.g. "ben"), value(language name)
 	Languages map[string]string `json:"languages"`
 	LatLng    []float64         `json:"latlng"`
-	CCA2      string            `json:"cca2"` // 2-letter code, useful fallback for slug
+	CCA2      string            `json:"cca2"` // two-letter code, useful fallback for slug
 }

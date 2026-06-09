@@ -7,9 +7,9 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-// HomeController handles the home page (SSR).
+
 type HomeController struct {
-	web.Controller // embedding gives us Get(), Post(), Prepare(), TplName, Data, etc.
+	web.Controller 
 }
 
 // featuredSlugs

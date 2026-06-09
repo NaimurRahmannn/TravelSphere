@@ -1,17 +1,17 @@
-# ---- Build stage ----
+
 FROM golang:1.25-alpine AS builder
 
 WORKDIR /src
 
-# Cache dependencies first.
+
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Build the static binary.
+
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /out/travelsphere .
 
-# ---- Runtime stage ----
+
 FROM alpine:3.20
 
 # Beego serves templates/static relative to the working directory.

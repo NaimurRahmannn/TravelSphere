@@ -1,13 +1,13 @@
-// Drives the live search and region filter on /countries
+
 (function () {
   const searchInput = document.getElementById("country-search");
   const regionSelect = document.getElementById("region-filter");
   const results = document.getElementById("country-results");
 
-  // If we're not on the explorer page, these won't exist — bail quietly.
+  
   if (!searchInput || !regionSelect || !results) return;
 
-  // Builds one country card's HTML--Mirrors the server-side template so the AJAX-rendered cards can look identical to the first-load ones.
+ // Match the server-rendered country card layout.
   function cardHTML(country) {
     const currencies = (country.Currencies || []).join(" ");
     const languages = (country.Languages || []).join(" ");
@@ -24,13 +24,12 @@
       </a>`;
   }
 
-  // Fetches matching countries and swaps them into the results container.
   async function runSearch() {
     const params = new URLSearchParams();
     if (searchInput.value.trim()) params.set("search", searchInput.value.trim());
     if (regionSelect.value) params.set("region", regionSelect.value);
 
-    // Loading state
+  
     results.innerHTML = `<p class="muted">Loading...</p>`;
 
     try {
@@ -48,7 +47,7 @@
     }
   }
 
-  // Debounce so we're not firing a request on every keystroke — wait for a short pause in typing first.
+  // // avoid request on every keypress
   let debounceTimer;
   function debouncedSearch() {
     clearTimeout(debounceTimer);

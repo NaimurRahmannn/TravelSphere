@@ -11,11 +11,10 @@ import (
 )
 
 const restCountriesBase = "https://restcountries.com/v3.1"
-
-// httpClient with a timeout so a slow external API can't hang our app.
+// Shared client for external API calls.
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
-// fetchCountries is a shared helper that calls a REST Countries URL and decodes the response into a slice of RawCountry.
+
 func fetchCountries(url string) ([]models.RawCountry, error) {
 	resp, err := httpClient.Get(url)
 	if err != nil {
@@ -42,13 +41,11 @@ func fetchCountries(url string) ([]models.RawCountry, error) {
 	return raw, nil
 }
 
-// GetAllCountries fetches the full country list.
 func GetAllCountries() ([]models.RawCountry, error) {
 	url := restCountriesBase + "/all?fields=name,capital,population,region,subregion,flags,currencies,languages,latlng,cca2"
 	return fetchCountries(url)
 }
 
-// GetCountryByName fetches a single country by its common name.
 func GetCountryByName(name string) ([]models.RawCountry, error) {
 	url := fmt.Sprintf("%s/name/%s?fields=name,capital,population,region,subregion,flags,currencies,languages,latlng,cca2", restCountriesBase, name)
 	return fetchCountries(url)

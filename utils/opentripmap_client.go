@@ -10,11 +10,11 @@ import (
 
 const openTripMapBase = "https://api.opentripmap.com/0.1/en/places"
 
-// Attraction is the clean DTO for a single attraction, Used by both the service layer and templates.
+
 type Attraction struct {
 	Name     string
 	Kinds    string
-	XID      string // OpenTripMap unique ID (useful for deduplication)
+	XID      string // OpenTripMap unique ID
 	Distance int
 }
 
@@ -26,15 +26,12 @@ type RawPlace struct {
 	Dist  float64 `json:"dist"`
 }
 
-// RawPlacesResponse is the top-level response from /radius.
+// RawPlacesResponse top-level response from radius.
 type RawPlacesResponse struct {
 	Features []struct {
 		Properties RawPlace `json:"properties"`
 	} `json:"features"`
 }
-
-// GetAttractionsByCoords fetches nearby attractions for a lat/lng.
-// radius is in metres. limit caps the number of results.
 func GetAttractionsByCoords(lat, lng float64, radius, limit int) ([]Attraction, error) {
 	apiKey, err := beego.AppConfig.String("OPENTRIPMAP_API_KEY")
 	if err != nil || apiKey == "" {
@@ -46,7 +43,7 @@ func GetAttractionsByCoords(lat, lng float64, radius, limit int) ([]Attraction, 
 		openTripMapBase, radius, lng, lat, limit, apiKey,
 	)
 
-	resp, err := httpClient.Get(url) // reuses the same httpClient from restcountries_client.go
+	resp, err := httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("opentripmap request failed: %w", err)
 	}
@@ -69,7 +66,6 @@ func GetAttractionsByCoords(lat, lng float64, radius, limit int) ([]Attraction, 
 
 	attractions := make([]Attraction, 0, len(raw))
 	for _, p := range raw {
-		// Skip unnamed places — they clutter the UI with no value.
 		if p.Name == "" {
 			continue
 		}

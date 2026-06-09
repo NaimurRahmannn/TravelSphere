@@ -9,14 +9,12 @@ import (
 	"TravelSphere/utils"
 )
 
-//For AJAX refresh DashboardController serves the dashboard counters as JSON
+
 type DashboardController struct {
 	web.Controller
 }
-
-// Get returns the wishlist summary counts. GET /api/dashboard/summary
 func (c *DashboardController) Get() {
-	// RequireAuthAPI guards this route, so a username is always present.
+	// RequireAuthAPI guards this route,a username is always present.
 	username, _ := c.GetSession("username").(string)
 	summary, err := services.GetDashboardSummary(username)
 	if err != nil {

@@ -68,7 +68,6 @@
         row.remove();
         flash("Removed.", "success");
 
-        // If that was the last row, show the empty state.
         if (!rows.querySelector("tr[data-id]")) {
           rows.innerHTML =
             '<tr class="empty-row"><td colspan="4">Your wishlist is empty. Add countries from their detail pages.</td></tr>';

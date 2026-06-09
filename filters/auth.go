@@ -6,16 +6,14 @@ import (
 	"TravelSphere/utils"
 )
 
-// RequireAuth blocks access to protected SSR pages for users without a session.
+//without a session user requireAuth blocks access to protected SSR pages
 func RequireAuth(ctx *beecontext.Context) {
-	// GetSession returns nil when the key isn't set, the user is a guest.
 	if ctx.Input.Session("username") == nil {
-		// Redirect to login
 		ctx.Redirect(302, "/login")
 	}
 }
 
-// RequireAuthAPI guards the JSON API. Unlike RequireAuth it returns a 401 with a JSON body instead of redirecting: the wishlist endpoints are called via fetch
+// RequireAuthAPI guards JSON API
 func RequireAuthAPI(ctx *beecontext.Context) {
 	if ctx.Input.Session("username") == nil {
 		ctx.Output.SetStatus(401)

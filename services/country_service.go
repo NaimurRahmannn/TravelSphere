@@ -9,14 +9,13 @@ import (
 	"TravelSphere/utils"
 )
 
-// slugify converts a country name to a url-safe slug, e.g. "United States" -> "united-states".
+// converts a country name to a url-safe slug
 func slugify(name string) string {
 	s := strings.ToLower(strings.TrimSpace(name))
 	s = strings.ReplaceAll(s, " ", "-")
 	return s
 }
 
-// converts one messy RawCountry into clean Country DTO.
 func transform(raw models.RawCountry) models.Country {
 	c := models.Country{
 		Name:         raw.Name.Common,
@@ -28,24 +27,21 @@ func transform(raw models.RawCountry) models.Country {
 		FlagPNG:      raw.Flags.PNG,
 		FlagAlt:      raw.Flags.Alt,
 	}
-
-	// Capital is an array; take the first if present.
 	if len(raw.Capital) > 0 {
 		c.Capital = raw.Capital[0]
 	}
 
-	// LatLng for OpenTripMap later.
+
 	if len(raw.LatLng) == 2 {
 		c.LatLng = [2]float64{raw.LatLng[0], raw.LatLng[1]}
 	}
 
-	// Flatten the currencies map -> ["BDT (Bangladeshi taka)"].
+	
 	for code, cur := range raw.Currencies {
 		c.Currencies = append(c.Currencies, fmt.Sprintf("%s (%s)", code, cur.Name))
 	}
-	sort.Strings(c.Currencies) // stable order so output is deterministic (matters for tests)
+	sort.Strings(c.Currencies) // stable order for tests
 
-	// Flatten the languages map -> ["Bengali", "English"].
 	for _, lang := range raw.Languages {
 		c.Languages = append(c.Languages, lang)
 	}
@@ -70,9 +66,7 @@ func GetAllCountries() ([]models.Country, error) {
 	return countries, nil
 }
 
-// GetCountryBySlug finds a single country by its slug.
 func GetCountryBySlug(slug string) (models.Country, error) {
-	// Convert slug back to a search name: "united-states" -> "united states".
 	name := strings.ReplaceAll(slug, "-", " ")
 	raw, err := utils.GetCountryByName(name)
 	if err != nil {
@@ -81,11 +75,11 @@ func GetCountryBySlug(slug string) (models.Country, error) {
 	if len(raw) == 0 {
 		return models.Country{}, fmt.Errorf("no country for slug %q", slug)
 	}
-	// Name search can return multiple matches; prefer an exact slug match.
+	// Rest countries can return partial matches
 	for _, r := range raw {
 		if slugify(r.Name.Common) == slug {
 			return transform(r), nil
 		}
 	}
-	return transform(raw[0]), nil // fallback to first result
+	return transform(raw[0]), nil 
 }

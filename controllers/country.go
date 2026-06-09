@@ -23,8 +23,6 @@ func(c *CountryController)Get(){
 	c.Layout = "layout.tpl"
 	c.TplName = "countries.tpl"
 }
-// Detail renders /countries/:slug — a single country with its attractions.
-// This is a full SSR page; visiting the URL directly returns complete HTML.
 func (c *CountryController) Detail() {
 	slug := c.Ctx.Input.Param(":slug")
 
@@ -39,8 +37,6 @@ func (c *CountryController) Detail() {
 	c.Data["ActiveNav"] = "countries"
 	c.Data["Country"] = country
 
-	// Attractions come from OpenTripMap using the country's centre point.
-	// A failure here is non-fatal: render the page, just without attractions.
 	attractions, attrErr := services.GetAttractionsByCountry(country.LatLng[0], country.LatLng[1])
 	if attrErr != nil {
 		c.Data["AttractionError"] = "Attractions are unavailable right now."
@@ -51,7 +47,7 @@ func (c *CountryController) Detail() {
 	c.TplName = "destination.tpl"
 }
 
-// renderNotFound shows the 404 template with the bad slug echoed back.
+// renderNotFound shows the 404 template with the bad slug echoed back
 func (c *CountryController) renderNotFound(slug string) {
 	c.Ctx.Output.SetStatus(404)
 

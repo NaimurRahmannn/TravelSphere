@@ -18,13 +18,11 @@
         body: JSON.stringify({
           country_name: countryName,
           note: "",
-          status: "Planned", // default; user can change it on wishlist page
+          status: "Planned", //user can change it on wishlist page
         }),
       });
 
       if (resp.status === 401) {
-        // Guests can't have a wishlist — send them to log in first. After
-        // logging in they can come back and add the country.
         feedback.textContent = "Please log in to save to your wishlist...";
         window.location.href = "/login";
         return;
@@ -33,7 +31,6 @@
       const data = await resp.json();
 
       if (!resp.ok) {
-        // The API's standard error shape gives us .error to show.
         feedback.className = "error";
         feedback.textContent = data.error || "Could not add to wishlist.";
         btn.disabled = false;
@@ -42,7 +39,6 @@
 
       feedback.className = "success";
       feedback.textContent = `${countryName} added to your wishlist.`;
-      // Leave the button disabled on success so it reads as "done".
     } catch (err) {
       feedback.className = "error";
       feedback.textContent = "Network error. Please try again.";

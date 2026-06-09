@@ -1,6 +1,6 @@
 package models
 
-// Wishlistitems
+
 type WishlistItem struct{
 	ID  string `json:"id"`
 	Username string `json:"username"`
@@ -9,7 +9,7 @@ type WishlistItem struct{
 	Status string `json:"status"`
 	CreatedAt string `json:"created_at"`
 }
-//Valid status values. Kept here so the service and validation share the same source
+//Valid status values
 const(
 	StatusPlanned="Planned"
 	StatusVisited="Visited"

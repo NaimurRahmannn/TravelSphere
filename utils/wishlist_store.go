@@ -7,21 +7,19 @@ import (
 	"sync"
 )
 
-// wishlistFile is where entries persist between runs. Treated as an external
+// wishlistFile is where entries persist
 const wishlistFile = "data/wishlist.json"
 
-// fileMu serialises file access. Beego handles requests concurrently,two simultaneous writes could otherwise clobber each other and corrupt the JSON.
+
 var fileMu sync.Mutex
 
-// ReadWishlist loads all entries from disk.
 func ReadWishlist() ([]models.WishlistItem, error) {
 	fileMu.Lock()
 	defer fileMu.Unlock()
 	return readUnlocked()
 }
 
-// readUnlocked does the actual read without locking, so write operations that
-// already hold the lock can reuse it without deadlocking on themselves.
+// Used when the caller already holds fileMu.
 func readUnlocked() ([]models.WishlistItem, error) {
 	bytes, err := os.ReadFile(wishlistFile)
 	if err != nil {
@@ -30,7 +28,6 @@ func readUnlocked() ([]models.WishlistItem, error) {
 		}
 		return nil, err
 	}
-	//empty files also valid
 	if len(bytes) == 0 {
 		return []models.WishlistItem{}, nil
 	}
@@ -47,7 +44,6 @@ func WriteWishlist(items []models.WishlistItem) error {
 	if err := os.MkdirAll("data", 0o755); err != nil {
 		return err
 	}
-	// Indented output keeps the file human-readable if anyone inspects it.
 	bytes, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		return err

@@ -11,10 +11,10 @@ func (c *BaseController) Prepare() {
 	// Shared layout
 	c.Layout = "layout.tpl"
 	
-	// Controllers can override this in their Get() if needed.
+	// Controllers can override this
 	c.Data["ActiveNav"] = ""
 
-	// Login state for the header. The key must match what AuthController sets on login ("username"), or the header would never show the logged-in state.
+	
 	isLoggedIn := false
 	if user := c.GetSession("username"); user != nil {
 		isLoggedIn = true
@@ -22,6 +22,5 @@ func (c *BaseController) Prepare() {
 	}
 	c.Data["IsLoggedIn"] = isLoggedIn
 
-	// Default title; pages override it.
 	c.Data["Title"] = "TravelSphere"
 }

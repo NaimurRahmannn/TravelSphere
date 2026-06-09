@@ -11,10 +11,9 @@ import (
 	"TravelSphere/utils"
 )
 
-// password min length
+
 const minPasswordLen = 6
 
-// registerUser validates input, hashes the password with bcrypt, and persists a new account
 func RegisterUser(username, password string) (models.User, error) {
 	username = strings.TrimSpace(username)
 	if username == "" {
@@ -33,14 +32,14 @@ func RegisterUser(username, password string) (models.User, error) {
 		PasswordHash: string(hash),
 		CreatedAt:    time.Now().UTC().Format(time.RFC3339),
 	}
-	// CreateUser enforces username uniqueness under a lock.
+	
 	if err := utils.CreateUser(user); err != nil {
 		return models.User{}, err
 	}
 	return user, nil
 }
 
-// AuthenticateUser checks credentials and returns the canonical stored username on success.
+
 func AuthenticateUser(username, password string) (string, error) {
 	user, found, err := utils.FindUser(strings.TrimSpace(username))
 	if err != nil {

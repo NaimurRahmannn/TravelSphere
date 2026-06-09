@@ -10,12 +10,12 @@ import (
 	"TravelSphere/utils"
 )
 
-// CountryController serves country data as JSON for the explorer's AJAX  search and region filter.
+
 type CountryController struct {
 	web.Controller
 }
 
-// Get returns countries, optionally narrowed by ?search= and ?region=. GET /api/countries
+// Get returns countries,narrowed by ?search= and ?region=
 func (c *CountryController) Get() {
 	search := strings.ToLower(strings.TrimSpace(c.GetString("search")))
 	region := strings.TrimSpace(c.GetString("region"))
@@ -28,15 +28,12 @@ func (c *CountryController) Get() {
 		return
 	}
 
-	// Filter in the handler for simplicity. For a larger app this belongs in
-	// the service, but the matching here is trivial enough to keep inline.
 	filtered := all[:0:0] // new zero-length slice, doesn't alias the original
 	for _, country := range all {
-		// Region filter: skip anything that doesn't match when a region is set.
+		// skip anything that doesn't match when a region is set.
 		if region != "" && country.Region != region {
 			continue
 		}
-		// Search matches name OR capital, case-insensitively.
 		if search != "" {
 			name := strings.ToLower(country.Name)
 			capital := strings.ToLower(country.Capital)

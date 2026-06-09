@@ -6,41 +6,40 @@ import(
 	"TravelSphere/services"
 	"TravelSphere/utils"
 )
-// WishlistController exposes wishlist CRUD as JSON at /api/wishlist.
+//JSON endpoints for wishlist actions.
 type WishlistController struct{
 	web.Controller
 }
-//createPayload is the expected POST body
+
 type createPayload struct{
 	CountryName string `json:"country_name"`
 	Note string `json:"note"`
 	Status string `json:"status"`
 }
 
-//updatePayload is the expected PUT body
+
 type updatePayload struct{
 	Note string `json:"note"`
     Status string `json:"status"`
 }
-//respondJson
+
 func (c * WishlistController) respondJSON(status int, data interface{}){
 	c.Ctx.Output.SetStatus(status)
 	c.Data["json"]=data
 	c.ServeJSON()
 }
 
-//respondError
+
 func (c * WishlistController) respondError(message string, status int){
 	c.respondJSON(status, utils.NewError(message,status))
 }
 
-// currentUser returns the logged-in username from the session
+//currentUser returns the logged-in username from the session
 func (c *WishlistController) currentUser() string {
 	username, _ := c.GetSession("username").(string)
 	return username
 }
 
-// Get returns all wishlist entries and according to the ID. GET /api/wishlist
 func (c *WishlistController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
@@ -64,8 +63,6 @@ func (c *WishlistController) Get() {
 	c.respondJSON(http.StatusOK, items)
 }
 
-
-// Post creates a new entry. POST /api/wishlist
 func (c *WishlistController) Post() {
 	var payload createPayload
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &payload); err != nil {
@@ -78,11 +75,9 @@ func (c *WishlistController) Post() {
 		c.respondError(err.Error(), http.StatusBadRequest)
 		return
 	}
-	c.respondJSON(http.StatusCreated, item) // 201 for successful creation
+	c.respondJSON(http.StatusCreated, item) 
 }
 
-
-// Put updates note/status of an entry.PUT /api/wishlist/:id
 func (c *WishlistController) Put() {
 	id := c.Ctx.Input.Param(":id")
 
@@ -100,8 +95,6 @@ func (c *WishlistController) Put() {
 	c.respondJSON(http.StatusOK, item)
 }
 
-
-// Delete removes an entry. DELETE /api/wishlist/:id
 func (c *WishlistController) Delete() {
 	id := c.Ctx.Input.Param(":id")
 

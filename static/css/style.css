@@ -296,9 +296,8 @@ section + section {
     flex-basis: 190px;
   }
 }
-/* ============================================================
-   Country Explorer page (/countries)
-   ============================================================ */
+/* 
+   Country Explorer page (/countries) */
 
 .page-head {
   margin-bottom: 1.5rem;
@@ -354,9 +353,6 @@ section + section {
   min-width: 16rem;
 }
 
-/* On the explorer page the grid WRAPS into rows, unlike the
-   horizontal scroll strip used for featured cards on the home page.
-   Targeting the ID overrides the .country-grid scroll behaviour here. */
 #country-results.country-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -365,8 +361,6 @@ section + section {
   flex-wrap: wrap;
 }
 
-/* The explorer cards are taller (full detail) and stack flag-on-top,
-   so we override the compact horizontal layout from the home page. */
 #country-results .country-card {
   flex-direction: column;
   align-items: stretch;
@@ -410,9 +404,7 @@ section + section {
   color: #8a2c25;
 }
 
-/* ============================================================
-   Destination detail page (/countries/:slug)
-   ============================================================ */
+/* Destination detail page (/countries/:slug) */
 
 /* Shared card surface used across the detail page sections */
 .card {
@@ -619,7 +611,7 @@ section + section {
   }
 }
 
-/* Home page autocomplete dropdown - Google style */
+/* Home page autocomplete dropdown */
 .search-box {
   position: relative;
 }
@@ -775,7 +767,7 @@ section + section {
   }
 
   .wishlist-table thead {
-    display: none; /* labels don't fit a stacked layout; rows read top-to-bottom */
+    display: none;
   }
 
   .wishlist-table tr[data-id] {
@@ -788,9 +780,8 @@ section + section {
   }
 }
 
-/* ============================================================
-   Dashboard page (/dashboard)
-   ============================================================ */
+/* 
+   Dashboard page /dashboard */
 
 .stats-grid {
   display: grid;
@@ -868,9 +859,7 @@ section + section {
   }
 }
 
-/* ============================================================
-   Auth: login page + header auth area
-   ============================================================ */
+/*Auth: login page + header auth area*/
 
 .nav-auth {
   display: flex;
