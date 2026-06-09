@@ -209,7 +209,7 @@ go tool cover -func=cov.out
 
 Coverage spans the services, utilities, controllers, API handlers, and filters.
 
-`![Test Coverage](docs/test_coverage.png)`
+![Test Coverage[88.9%]](docs/test_coverage.png)
 
 ## Run With Docker Desktop
 
