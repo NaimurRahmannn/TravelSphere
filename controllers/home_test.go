@@ -14,8 +14,8 @@ func TestHomeControllerGet(t *testing.T) {
 
 	c.Get()
 
-	if c.Data["Title"] != "TravelSphere" {
-		t.Errorf("expected Title to be %q, got %q", "TravelSphere", c.Data["Title"])
+	if c.Data["Title"] != "Home" {
+		t.Errorf("expected Title to be %q, got %q", "Home", c.Data["Title"])
 	}
 
 	if c.Layout != "layout.tpl" {

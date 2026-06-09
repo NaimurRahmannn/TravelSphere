@@ -1,4 +1,4 @@
-// Search autocomplete on the home page
+
 (function () {
   const input = document.getElementById("destination-search");
   const box = document.getElementById("search-suggestions");
@@ -7,7 +7,6 @@
 
   let timer;
   let currentRequestId = 0;
-
   function resetSearch() {
     input.value = "";
     box.innerHTML = "";

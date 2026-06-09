@@ -3,13 +3,10 @@ package controllers
 import (
 	"TravelSphere/models"
 	"TravelSphere/services"
-
-	"github.com/beego/beego/v2/server/web"
 )
 
-
 type HomeController struct {
-	web.Controller 
+	BaseController
 }
 
 // featuredSlugs
