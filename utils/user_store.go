@@ -7,10 +7,11 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"path/filepath"
 )
 
 
-const userFile = "data/users.json"
+var userFile = "data/users.json"
 
 
 var userMu sync.Mutex
@@ -43,7 +44,7 @@ func readUsersUnlocked() ([]models.User, error) {
 
 // writeUsersUnlocked persists without locking,for reuse under a held lock.
 func writeUsersUnlocked(users []models.User) error {
-	if err := os.MkdirAll("data", 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(userFile), 0o755); err != nil {
 		return err
 	}
 	bytes, err := json.MarshalIndent(users, "", "  ")
