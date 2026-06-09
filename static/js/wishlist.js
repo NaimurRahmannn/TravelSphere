@@ -4,7 +4,7 @@
 
   if (!rows) return;
 
-  // Briefly show a status message, then clear it.
+  // show a status message and clear
   function flash(text, kind) {
     message.textContent = text;
     message.className = kind || "";
@@ -48,8 +48,6 @@
         e.target.disabled = false;
       }
     }
-
-    //  Delete 
     if (e.target.classList.contains("btn-delete")) {
       e.target.disabled = true;
       try {
@@ -64,7 +62,6 @@
           e.target.disabled = false;
           return;
         }
-        // Remove just this row from the DOM — no reload, no refetch needed.
         row.remove();
         flash("Removed.", "success");
 

@@ -50,7 +50,6 @@ func transform(raw models.RawCountry) models.Country {
 	return c
 }
 
-// GetAllCountries returns all countries as clean DTOs, sorted by name.
 func GetAllCountries() ([]models.Country, error) {
 	raw, err := utils.GetAllCountries()
 	if err != nil {
