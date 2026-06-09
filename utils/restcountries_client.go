@@ -10,7 +10,7 @@ import (
 	"TravelSphere/models"
 )
 
-const restCountriesBase = "https://restcountries.com/v3.1"
+var restCountriesBase = "https://restcountries.com/v3.1"
 // Shared client for external API calls.
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
