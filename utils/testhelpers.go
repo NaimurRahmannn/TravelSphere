@@ -21,3 +21,15 @@ func SetHTTPClient(c *http.Client) func() {
 	httpClient = c
 	return func() { httpClient = original }
 }
+
+func SetWishlistFile(path string) func() {
+	original := wishlistFile
+	wishlistFile = path
+	return func() { wishlistFile = original }
+}
+
+func SetUserFile(path string) func() {
+	original := userFile
+	userFile = path
+	return func() { userFile = original }
+}
