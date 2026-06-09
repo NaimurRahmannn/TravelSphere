@@ -25,7 +25,7 @@ func (c *HomeController) Get() {
 		featured = append(featured, country)
 	}
 	c.Data["Featured"] = featured
-	c.Data["Featured"] = featured
+	c.Data["PopularAttractions"] = services.GetPopularAttractions()
 	c.Layout = "layout.tpl"
 	c.TplName = "home.tpl"
 }
