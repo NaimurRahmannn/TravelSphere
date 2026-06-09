@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"os"
 	"sync"
+	"path/filepath"
 )
 
 // wishlistFile is where entries persist
-const wishlistFile = "data/wishlist.json"
+var wishlistFile = "data/wishlist.json"
 
 
 var fileMu sync.Mutex
@@ -41,7 +42,7 @@ func readUnlocked() ([]models.WishlistItem, error) {
 func WriteWishlist(items []models.WishlistItem) error {
 	fileMu.Lock()
 	defer fileMu.Unlock()
-	if err := os.MkdirAll("data", 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(wishlistFile), 0o755); err != nil {
 		return err
 	}
 	bytes, err := json.MarshalIndent(items, "", "  ")
