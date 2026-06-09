@@ -190,7 +190,7 @@ The assessment ruled out databases and offered three storage options: in-memory,
 
 The trade-off is that whole-file read/write doesn't scale to large datasets or heavy concurrent writes — for a personal wishlist that's a non-issue, but a real product would move to a proper database.
 
-## Tests
+## Tests [Coverage: 88.9%]
 
 Run the full suite:
 
