@@ -37,4 +37,4 @@
 	</ul>
 </section>
 
-<script src="/static/js/home.js"></script>
+<script src="/static/js/home.js?v=2"></script>
