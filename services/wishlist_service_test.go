@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"TravelSphere/utils"
+	"os"
 )
 
 func redirectWishlist(t *testing.T) {
@@ -60,7 +61,6 @@ func TestGetWishlist_EmptyIsNotNil(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	// Must be an empty slice, not nil, so the JSON API returns [] not null.
 	if items == nil {
 		t.Error("expected empty slice, got nil")
 	}
@@ -71,12 +71,9 @@ func TestGetWishlist_EmptyIsNotNil(t *testing.T) {
 
 func TestCreateWishlistItem_ValidationError(t *testing.T) {
 	redirectWishlist(t)
-
-	// Empty country name fails validation before any storage write.
 	if _, err := CreateWishlistItem("alice", "", "", "Planned"); err == nil {
 		t.Error("expected validation error for empty country, got nil")
 	}
-	// Bad status also fails.
 	if _, err := CreateWishlistItem("alice", "France", "", "Maybe"); err == nil {
 		t.Error("expected validation error for bad status, got nil")
 	}
@@ -94,8 +91,6 @@ func TestUpdateWishlistItem(t *testing.T) {
 	if updated.Note != "new note" || updated.Status != "Visited" {
 		t.Errorf("update didn't apply: %+v", updated)
 	}
-
-	// Confirm it persisted.
 	got, _ := GetWishlistItemByID("alice", created.ID)
 	if got.Note != "new note" {
 		t.Errorf("change didn't persist, got note %q", got.Note)
@@ -167,4 +162,53 @@ func TestGetDashboardSummary(t *testing.T) {
 	if summary.Total != 3 || summary.Planned != 2 || summary.Visited != 1 {
 		t.Errorf("unexpected summary for alice: %+v", summary)
 	}
+}
+
+func corruptWishlist(t *testing.T) {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "wishlist.json")
+	if err := os.WriteFile(path, []byte("{not valid json"), 0o644); err != nil {
+		t.Fatalf("setup failed: %v", err)
+	}
+	restore := utils.SetWishlistFile(path)
+	t.Cleanup(restore)
+}
+
+func TestWishlist_ReadErrors(t *testing.T) {
+	t.Run("GetWishlist", func(t *testing.T) {
+		corruptWishlist(t)
+		if _, err := GetWishlist("alice"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
+	t.Run("CreateWishlistItem", func(t *testing.T) {
+		corruptWishlist(t)
+		if _, err := CreateWishlistItem("alice", "France", "", "Planned"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
+	t.Run("UpdateWishlistItem", func(t *testing.T) {
+		corruptWishlist(t)
+		if _, err := UpdateWishlistItem("alice", "id", "", "Planned"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
+	t.Run("DeleteWishlistItem", func(t *testing.T) {
+		corruptWishlist(t)
+		if err := DeleteWishlistItem("alice", "id"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
+	t.Run("GetWishlistItemByID", func(t *testing.T) {
+		corruptWishlist(t)
+		if _, err := GetWishlistItemByID("alice", "id"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
+	t.Run("GetDashboardSummary", func(t *testing.T) {
+		corruptWishlist(t)
+		if _, err := GetDashboardSummary("alice"); err == nil {
+			t.Error("expected read error, got nil")
+		}
+	})
 }
