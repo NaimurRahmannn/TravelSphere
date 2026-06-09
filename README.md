@@ -5,6 +5,22 @@ A destination discovery and trip-planning app built with the Beego framework (Go
 
 Built as a full-stack Beego MVC app: server-rendered pages for navigation, a separate JSON API for the dynamic bits, and AJAX so searching and editing your wishlist never reload the page.
 
+## Table of Contents
+
+- [What it does](#what-it-does)
+- [Tech](#tech)
+- [Project layout](#project-layout)
+- [Setup](#setup)
+- [Using the app](#using-the-app)
+- [AJAX behavior](#ajax-behavior)
+- [Screenshots](#screenshots)
+- [Routes](#routes)
+- [Wishlist storage](#wishlist-storage)
+- [Tests](#tests)
+- [Run With Docker Desktop](#run-with-docker-desktop)
+- [Notes and limitations](#notes-and-limitations)
+
+
 ## What it does
 
 - Browse and search countries (data from the REST Countries API)
@@ -72,7 +88,7 @@ appname = TravelSphere
 httpport = 8080
 runmode = dev
 OPENTRIPMAP_API_KEY=your_api_key
-sessionon = true
+sessionon = truehttps://github.com/NaimurRahmannn/TravelSphere
 copyrequestbody = true
 ```
 
