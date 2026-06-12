@@ -16,6 +16,7 @@ Built as a full-stack Beego MVC app: server-rendered pages for navigation, a sep
 - [Screenshots](#screenshots)
 - [Routes](#routes)
 - [Wishlist storage](#wishlist-storage)
+- [Migrating from REST Countries v3.1 to v5](#migrating-from-rest-countries-v31-to-v5)
 - [Tests](#tests)
 - [Run With Docker Desktop](#run-with-docker-desktop)
 - [Notes and limitations](#notes-and-limitations)
@@ -81,18 +82,19 @@ The app reads configuration from `conf/app.conf`. A sample is committed as `conf
 cp conf/app.conf.sample conf/app.conf
 ```
 
-Then set the OpenTripMap key in `conf/app.conf`:
+Then set your API keys in `conf/app.conf`:
 
 ```ini
 appname = TravelSphere
 httpport = 8080
 runmode = dev
-OPENTRIPMAP_API_KEY=your_api_key
-sessionon = truehttps://github.com/NaimurRahmannn/TravelSphere
+OPENTRIPMAP_API_KEY=your_opentripmap_key
+RESTCOUNTRIES_API_KEY=your_restcountries_key
+sessionon = true
 copyrequestbody = true
 ```
 
-**REST Countries:** no key needed — it's a free, public API.
+**REST Countries:** the v5 API now requires an API key, passed as a Bearer token on every request. Grab one from your REST Countries account and drop it into `RESTCOUNTRIES_API_KEY`. (The old v3.1 endpoint was keyless — see [Migrating from REST Countries v3.1 to v5](#migrating-from-rest-countries-v31-to-v5) for why that changed.)
 
 `conf/app.conf` is gitignored so your key never gets committed. The committed `conf/app.conf.sample` documents what's expected.
 
@@ -206,7 +208,21 @@ The assessment ruled out databases and offered three storage options: in-memory,
 
 The trade-off is that whole-file read/write doesn't scale to large datasets or heavy concurrent writes — for a personal wishlist that's a non-issue, but a real product would move to a proper database.
 
-## Tests [Coverage: 88.9%]
+## Migrating from REST Countries v3.1 to v5
+
+The app originally used the REST Countries v3.1 endpoint, which stopped working and had to be replaced with v5. It turned out to be more than a URL change. These were the main challenges I face to migrating v3.1 to v5:
+
+- **Authentication.** v3.1 was keyless; v5 requires an `Authorization: Bearer <key>` header on every request. I had to add an API key to the client and read it from config (`RESTCOUNTRIES_API_KEY` in `conf/app.conf`), mirroring how the OpenTripMap key is handled.
+
+- **Different response structure.** v3.1 returned a flat array of countries. v5 wraps the data in `{ "data": { "objects": [...], "meta": {...} } }` and renames almost every field: `name.common` → `names.common`, `flags.png` → `flag.url_png`, currencies and languages changed from keyed maps to arrays of objects, and the lat/lng moved into a nested `coordinates` object. I had to inspect the live v5 response and rewrite the parsing structs from scratch.
+
+- **Pagination.** v3.1 could return every country in one call. v5 caps each request at 100 records, but there are 254 countries, so a single request silently returns an incomplete list. I had to loop with an `offset` and follow the `meta.more` flag, fetching pages until the API reports no more results, then combine them.
+
+- **Avoiding changes across the rest of the app.** The services, templates, and tests all depend on the original country shape. Instead of rewriting them, I kept the internal `RawCountry` type unchanged and mapped the v5 response into it inside the client, so the change stayed isolated. The only other update needed was rewriting the test fixtures to the new v5 JSON shape.
+
+- **A stale binary masking the fix.** After the changes I made, the page still showed me "Could not load countries." The cause wasn't the code — an old server binary was still running on my port 8080 and serving the previous version. A plain `go build` binary doesn't reload on code or config changes, so it has to be rebuilt and restarted (or run with `bee run`, which restarts automatically).
+
+## Tests [Coverage: 89%]
 
 Run the full suite:
 
@@ -220,12 +236,12 @@ For a coverage report:
 
 ```
 go test ./... -coverprofile=cov.out
-go tool cover -func=cov.out
+go tool cover -func cov
 ```
 
 Coverage spans the services, utilities, controllers, API handlers, and filters.
 
-![Test Coverage[88.9%]](docs/test_coverage.png)
+![Test Coverage[89%]](docs/test_coverage.png)
 
 ## Run With Docker Desktop
 

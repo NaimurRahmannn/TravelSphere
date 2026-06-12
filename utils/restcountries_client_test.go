@@ -6,18 +6,18 @@ import (
 	"testing"
 )
 
-const sampleCountryJSON = `[{
-	"name": {"common": "Bangladesh", "official": "People's Republic of Bangladesh"},
-	"capital": ["Dhaka"],
+const sampleCountryJSON = `{"data":{"objects":[{
+	"names": {"common": "Bangladesh", "official": "People's Republic of Bangladesh"},
+	"codes": {"alpha_2": "BD"},
+	"capitals": [{"name": "Dhaka"}],
 	"population": 169828911,
 	"region": "Asia",
 	"subregion": "Southern Asia",
-	"flags": {"png": "https://flagcdn.com/bd.png", "alt": "Flag of Bangladesh"},
-	"currencies": {"BDT": {"name": "Bangladeshi taka", "symbol": "৳"}},
-	"languages": {"ben": "Bengali"},
-	"latlng": [24, 90],
-	"cca2": "BD"
-}]`
+	"flag": {"url_png": "https://flagcdn.com/bd.png", "description": "Flag of Bangladesh"},
+	"currencies": [{"code": "BDT", "name": "Bangladeshi taka", "symbol": "৳"}],
+	"languages": [{"name": "Bengali", "iso639_3": "ben"}],
+	"coordinates": {"lat": 24, "lng": 90}
+}],"meta":{"more":false}}}`
 
 func withServer(t *testing.T, status int, body string) {
 	t.Helper()

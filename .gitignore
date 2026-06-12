@@ -13,6 +13,7 @@ main
 *.out
 coverage.txt
 coverage.html
+cov
 
 # Secrets & environment 
 .env

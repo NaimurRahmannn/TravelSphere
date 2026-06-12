@@ -8,30 +8,30 @@ import (
 	"TravelSphere/utils"
 )
 
-const twoCountriesJSON = `[
+const twoCountriesJSON = `{"data":{"objects":[
 	{
-		"name": {"common": "Zimbabwe", "official": "Republic of Zimbabwe"},
-		"capital": ["Harare"],
+		"names": {"common": "Zimbabwe", "official": "Republic of Zimbabwe"},
+		"codes": {"alpha_2": "ZW"},
+		"capitals": [{"name": "Harare"}],
 		"population": 15000000,
 		"region": "Africa",
-		"flags": {"png": "z.png", "alt": "flag"},
-		"currencies": {"ZWL": {"name": "Zimbabwean dollar"}},
-		"languages": {"eng": "English", "sna": "Shona"},
-		"latlng": [-20, 30],
-		"cca2": "ZW"
+		"flag": {"url_png": "z.png", "description": "flag"},
+		"currencies": [{"code": "ZWL", "name": "Zimbabwean dollar"}],
+		"languages": [{"name": "English", "iso639_3": "eng"}, {"name": "Shona", "iso639_3": "sna"}],
+		"coordinates": {"lat": -20, "lng": 30}
 	},
 	{
-		"name": {"common": "Albania", "official": "Republic of Albania"},
-		"capital": ["Tirana"],
+		"names": {"common": "Albania", "official": "Republic of Albania"},
+		"codes": {"alpha_2": "AL"},
+		"capitals": [{"name": "Tirana"}],
 		"population": 2400000,
 		"region": "Europe",
-		"flags": {"png": "a.png", "alt": "flag"},
-		"currencies": {"ALL": {"name": "Albanian lek"}},
-		"languages": {"sqi": "Albanian"},
-		"latlng": [41, 20],
-		"cca2": "AL"
+		"flag": {"url_png": "a.png", "description": "flag"},
+		"currencies": [{"code": "ALL", "name": "Albanian lek"}],
+		"languages": [{"name": "Albanian", "iso639_3": "sqi"}],
+		"coordinates": {"lat": 41, "lng": 20}
 	}
-]`
+],"meta":{"more":false}}}`
 
 
 func startCountryServer(t *testing.T, status int, body string) {
@@ -109,7 +109,7 @@ func TestGetCountryBySlug_FallbackToFirst(t *testing.T) {
 }
 
 func TestGetCountryBySlug_Empty(t *testing.T) {
-	startCountryServer(t, http.StatusOK, `[]`)
+	startCountryServer(t, http.StatusOK, `{"data":{"objects":[],"meta":{"more":false}}}`)
 
 	if _, err := GetCountryBySlug("anything"); err == nil {
 		t.Error("expected an error for an empty result, got nil")

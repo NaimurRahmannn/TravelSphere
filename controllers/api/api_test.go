@@ -62,10 +62,10 @@ func mockCountries(t *testing.T) {
 	t.Helper()
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`[
-			{"name":{"common":"France"},"capital":["Paris"],"region":"Europe","flags":{},"latlng":[46,2],"cca2":"FR"},
-			{"name":{"common":"Japan"},"capital":["Tokyo"],"region":"Asia","flags":{},"latlng":[36,138],"cca2":"JP"}
-		]`))
+		w.Write([]byte(`{"data":{"objects":[
+			{"names":{"common":"France"},"codes":{"alpha_2":"FR"},"capitals":[{"name":"Paris"}],"region":"Europe","coordinates":{"lat":46,"lng":2}},
+			{"names":{"common":"Japan"},"codes":{"alpha_2":"JP"},"capitals":[{"name":"Tokyo"}],"region":"Asia","coordinates":{"lat":36,"lng":138}}
+		],"meta":{"more":false}}}`))
 	}))
 
 	restore := utils.SetRestCountriesBaseURL(srv.URL)

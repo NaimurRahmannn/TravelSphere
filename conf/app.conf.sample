@@ -2,5 +2,6 @@ appname = TravelSphere
 httpport = 8080
 runmode = dev
 OPENTRIPMAP_API_KEY=
+RESTCOUNTRIES_API_KEY=
 sessionon = true
 copyrequestbody = true
